@@ -1,3 +1,4 @@
+import os
 import json
 import tkinter as tk
 import matplotlib.pyplot as plt
@@ -124,7 +125,11 @@ class TimeRecorder:
 
     def save_sessions(self):
         timestamp = self.get_current_datetime().strftime('%Y-%m-%d_%H-%M-%S')
-        with open(f'{timestamp}.json', 'w') as f:
+        save_directory = "saved_sessions"  # Replace with the name of your child directory
+        file_path = os.path.join(save_directory, f'{timestamp}.json')
+        # Create the target directory if it doesn't exist
+        os.makedirs(save_directory, exist_ok=True)
+        with open(file_path, 'w') as f:
             json.dump(self.sessions, f)
         messagebox.showinfo("Success", f"Sessions saved as '{timestamp}.json'!")
 
