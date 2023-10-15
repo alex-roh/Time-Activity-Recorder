@@ -1,2 +1,6 @@
 saved_sessions/
 output/
+build/
+dist/
+__pycache__/
+stopwatch.spec
