@@ -121,11 +121,23 @@ class TimeRecorder:
 
     def make_autopct(self, values):
         def my_autopct(pct):
-            val = int(round(pct * sum(values) / 100.0))
-            return '{p:.2f}%\n({v:d} sec)'.format(p=pct, v=val)
+            total_seconds = sum(values)
+            hours, remainder = divmod(int(pct / 100 * total_seconds), 3600)
+            minutes, seconds = divmod(remainder, 60)
+            formatted_time = ""
+            if hours > 0:
+                formatted_time += f"{hours}h "
+            if minutes > 0:
+                formatted_time += f"{minutes}m "
+            formatted_time += f"{seconds}s"
+
+            return '{p:.2f}%\n({f_time})'.format(p=pct, f_time=formatted_time)
         return my_autopct
 
     def show_graph(self):
+        plt.rcParams['font.family'] ='Malgun Gothic'
+        plt.rcParams['axes.unicode_minus'] =False
+        
         activity_times = defaultdict(float)
         for session in self.sessions:
             activity_times[session['activity']] += session['end'] - session['start']
